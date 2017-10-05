@@ -1,0 +1,54 @@
+---
+title: "article-cites"
+author: "Tanya Murphy"
+date: "October 4, 2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r imp-cites}
+library(xml2)
+anton2006cites <- read.delim(file = "C:/Users/Tanya/Dropbox/_ref/cites/Anton2006cites.txt", stringsAsFactors = FALSE)
+head(anton2006cites)
+
+lynch2005 <- read_xml(x = "C:/Users/Tanya/Dropbox/_ref/cites/Lynch2005cites.xml")
+
+lynch2005cites <- xml_find_all(lynch2005, ".//F")
+lynch2005cites2 <- xml_find_all(lynch2005cites[5], ".//D")
+lynch2005cites3 <- xml_text(lynch2005cites2, trim = TRUE)
+lynch2005cites4 <- gsub(",.*$", "", lynch2005cites3)
+lynch2005cites4 <- gsub("[.].*$", "", lynch2005cites4)
+lynch2005cites4 <- gsub("[[:space:]]", "", lynch2005cites4)
+library(stringr)
+# Get the parenthesis and what is inside
+lynch2005cites5 <- str_extract(lynch2005cites3, "\\([^()]+\\)")
+# Remove parenthesis
+lynch2005cites5 <- substring(k, 2, nchar(k)-1)
+
+
+
+library(tm)
+lynch2005cites6 <- removeWords(lynch2005cites3, c("the", "The", "'"))
+
+removePunctuation(crude[[14]], preserve_intra_word_dashes = TRUE)
+
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
